@@ -21,6 +21,7 @@ public class Main {
         createBookAJAXRequest.number = 10;
         CreateBookRequest createBookRequest = mapper.toCreateBookRequest(createBookAJAXRequest);
         System.out.println(createBookRequest);
-
+        Class<? extends BooServiceMapper> mapperClass = mapper.getClass();
+        System.out.println(mapperClass);
     }
 }
