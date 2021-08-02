@@ -27,19 +27,17 @@ public class MapperGenerator {
         CtClass cc = pool.makeClass(mapperClass.getName() + "Impl");
         cc.addInterface(pool.get(mapperClass.getName()));
         for (Method method : mapperClass.getMethods()) {
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            if (parameterTypes.length > 1) {
+            if (method.getParameterCount() > 1) {
                 throw new RuntimeException("mapper method param is only one , mapper class " + mapperClass.getName());
             }
             StringJoiner sj = new StringJoiner("\n");
-            Class<?> parameterType = parameterTypes[0];
+            Class<?> parameterType = method.getParameterTypes()[0];
             for (Field field : parameterType.getFields()) {
                 sj.add(SETTER_CODE.formatted(field.getName()));
             }
             String methodBody = METHOD_DECLARE_CODE.formatted(method.getReturnType().getName(), method.getName(), parameterType.getName(), sj);
             cc.addMethod(CtMethod.make(methodBody, cc));
         }
-        cc.writeFile();
         return (T) cc.toClass(mapperClass).getDeclaredConstructor().newInstance();
     }
 }
