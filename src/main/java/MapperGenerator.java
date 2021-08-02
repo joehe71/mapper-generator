@@ -53,7 +53,6 @@ public class MapperGenerator {
             String methodBody = METHOD_DECLARE_CODE.formatted(returnType.getName(), method.getName(), parameterType.getName(), sj);
             cc.addMethod(CtMethod.make(methodBody, cc));
         }
-        cc.writeFile();
         return (T) cc.toClass(mapperClass).getDeclaredConstructor().newInstance();
     }
 }
